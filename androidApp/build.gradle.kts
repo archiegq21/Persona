@@ -1,3 +1,4 @@
+import com.google.firebase.appdistribution.gradle.AppDistributionExtension
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 import org.jetbrains.kotlin.konan.properties.Properties
@@ -7,6 +8,9 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.app.distribution)
 }
 
 kotlin {
@@ -30,6 +34,9 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+
+            implementation(project.dependencies.platform(libs.firebase.bom))
+            implementation(libs.firebase.crashlytics)
         }
     }
 }
@@ -71,6 +78,10 @@ android {
             enableV2Signing = true
             enableV3Signing = true
             enableV4Signing = true
+            configure<AppDistributionExtension> {
+                artifactType = "APK"
+                serviceCredentialsFile = "${projectDir.path}/../keys/persona-5b83b-b28629f60085.json"
+            }
         }
         create("release") {
             val keyStoreProperties =
@@ -84,6 +95,10 @@ android {
             enableV2Signing = true
             enableV3Signing = true
             enableV4Signing = true
+            configure<AppDistributionExtension> {
+                artifactType = "AAB"
+                serviceCredentialsFile = "${projectDir.path}/../keys/persona-1e95c-3f1efd770db3.json"
+            }
         }
     }
 

@@ -9,25 +9,41 @@ kotlin = "2.1.0"
 # Comose Multiplatform
 compose = "1.7.3"
 # Android Compose
+compose-android = "1.7.6"
 androidx-activityCompose = "1.10.0"
 android-compose-ui-test = "1.7.6"
 # Android
 androidx-appcompat = "1.7.0"
 androidx-splashscreen = "1.0.1"
+# Google
+google-services = "4.4.2"
+# Firebase
+firebase-crashlytics-plugin = "3.0.2"
+firebase = "33.7.0"
+firebase-app-distribution = "5.1.0"
+# Kermit
+kermit = "2.0.5"
+crashkios = "0.8.6"
 
 [libraries]
 # Kotlin
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-# Compose Multiplatatform
-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 # Android Compose
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-android" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose-android" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 android-compose-ui-test = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "android-compose-ui-test"}
 android-compose-ui-junit = { module = "androidx.compose.ui:ui-test-junit4-android", version.ref = "android-compose-ui-test"}
 # Android
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-splashscreen" }
+# Firebase
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+# Kermit
+kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+kermit-crashylytics = { module = "co.touchlab:kermit-crashlytics", version.ref = "kermit" }
+crashkios = { module = "co.touchlab.crashkios:crashlytics", version.ref = "crashkios" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -37,3 +53,6 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose" }
 cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
+firebase-app-distribution = { id = "com.google.firebase.appdistribution", version.ref = "firebase-app-distribution" }
