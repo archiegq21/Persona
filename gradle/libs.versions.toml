@@ -1,0 +1,39 @@
+[versions]
+ios-target = "15.0"
+android-compileSdk = "35"
+android-minSdk = "24"
+android-targetSdk = "34"
+agp = "8.8.0"
+# Kotlin
+kotlin = "2.1.0"
+# Comose Multiplatform
+compose = "1.7.3"
+# Android Compose
+androidx-activityCompose = "1.10.0"
+android-compose-ui-test = "1.7.6"
+# Android
+androidx-appcompat = "1.7.0"
+androidx-splashscreen = "1.0.1"
+
+[libraries]
+# Kotlin
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+# Compose Multiplatatform
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+# Android Compose
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+android-compose-ui-test = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "android-compose-ui-test"}
+android-compose-ui-junit = { module = "androidx.compose.ui:ui-test-junit4-android", version.ref = "android-compose-ui-test"}
+# Android
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-splashscreen" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose" }
+cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
