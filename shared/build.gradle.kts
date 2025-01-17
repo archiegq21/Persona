@@ -31,6 +31,10 @@ kotlin {
             baseName = "shared"
             isStatic = true
         }
+
+        pod("FirebaseCrashlytics") {
+            extraOpts += listOf("-compiler-option", "-fmodules")
+        }
     }
     
     sourceSets {
@@ -42,6 +46,10 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+
+            implementation(libs.kermit)
+            implementation(libs.crashkios)
+            implementation(libs.kermit.crashylytics)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
