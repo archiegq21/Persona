@@ -13,13 +13,14 @@ compose-android = "1.7.6"
 androidx-activityCompose = "1.10.0"
 android-compose-ui-test = "1.7.6"
 # Android
+activityKtx = "1.10.0"
 androidx-appcompat = "1.7.0"
 androidx-splashscreen = "1.0.1"
 # Google
 google-services = "4.4.2"
 # Firebase
 firebase-crashlytics-plugin = "3.0.2"
-firebase = "33.7.0"
+firebase = "33.8.0"
 firebase-app-distribution = "5.1.0"
 # Kermit
 kermit = "2.0.5"
@@ -35,6 +36,7 @@ androidx-activity-compose = { module = "androidx.activity:activity-compose", ver
 android-compose-ui-test = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "android-compose-ui-test"}
 android-compose-ui-junit = { module = "androidx.compose.ui:ui-test-junit4-android", version.ref = "android-compose-ui-test"}
 # Android
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-splashscreen" }
 # Firebase

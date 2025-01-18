@@ -6,7 +6,10 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.apps.shared.PersonaApp
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,8 +23,14 @@ class MainActivity : AppCompatActivity() {
                     Color.argb(0x80, 0x1b, 0x1b, 0x1b)
                 )
             )
+            PersonaApp()
         }
     }
 
 }
 
+@Preview
+@Composable
+fun Preview() {
+    PersonaApp()
+}

@@ -7,7 +7,7 @@ import co.touchlab.kermit.crashlytics.CrashlyticsLogWriter
 import co.touchlab.kermit.platformLogWriter
 
 @OptIn(ExperimentalKermitApi::class)
-fun setUpCrashlytics() {
+fun setUpAndroidCrashlytics() {
     enableCrashlytics()
     Logger.setLogWriters(CrashlyticsLogWriter(), platformLogWriter())
 }
