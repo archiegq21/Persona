@@ -16,6 +16,8 @@ android-compose-ui-test = "1.7.6"
 activityKtx = "1.10.0"
 androidx-appcompat = "1.7.0"
 androidx-splashscreen = "1.0.1"
+# Koin
+koin-bom = "4.0.0"
 # Google
 google-services = "4.4.2"
 # Firebase
@@ -39,11 +41,23 @@ android-compose-ui-junit = { module = "androidx.compose.ui:ui-test-junit4-androi
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-splashscreen" }
+# Koin
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
+koin-core = { module = "io.insert-koin:koin-core" }
+koin-test = { module = "io.insert-koin:koin-test" }
+koin-test-junit4 = { module = "io.insert-koin:koin-test-junit4" }
+koin-android = { module = "io.insert-koin:koin-android" }
+koin-compose-android = { module = "io.insert-koin:koin-androidx-compose" }
+koin-compose-navigation-android = { module = "io.insert-koin:koin-androidx-compose-navigation" }
+koin-compose = { module = "io.insert-koin:koin-compose" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel" }
+koin-compose-viewmodel-navigation = { module = "io.insert-koin:koin-compose-viewmodel-navigation" }
 # Firebase
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 # Kermit
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+kermit-koin = { module = "co.touchlab:kermit-koin", version.ref = "kermit" }
 kermit-crashylytics = { module = "co.touchlab:kermit-crashlytics", version.ref = "kermit" }
 crashkios = { module = "co.touchlab.crashkios:crashlytics", version.ref = "crashkios" }
 

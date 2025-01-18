@@ -19,5 +19,6 @@ dependencyResolutionManagement {
 include(
     ":androidApp",
     ":shared",
+    ":core:config",
     ":core:designsystem",
 )

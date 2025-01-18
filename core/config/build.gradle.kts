@@ -1,12 +1,9 @@
-import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.cocoapods)
 }
 
@@ -24,10 +21,10 @@ kotlin {
 
     cocoapods {
         version = "1.0"
-        summary = "Design System"
-        homepage = "Design System"
+        summary = "Config"
+        homepage = "Config"
         framework {
-            baseName = "designsystem"
+            baseName = "config"
             isStatic = true
         }
         podfile = project.file("../../iosApp/Podfile")
@@ -35,24 +32,20 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-            api(libs.androidx.activity.ktx)
-            api(libs.androidx.activity.compose)
+            api(libs.koin.android)
+            api(libs.koin.compose.android)
         }
         commonMain.dependencies {
-            api(compose.runtime)
-            api(compose.foundation)
-            api(compose.material3)
-            api(compose.materialIconsExtended)
-            api(compose.ui)
-            api(compose.components.resources)
-            api(compose.components.uiToolingPreview)
+            api(project.dependencies.platform(libs.koin.bom))
+            api(libs.koin.core)
+            api(libs.koin.compose)
+            api(libs.koin.compose.viewmodel)
+            api(libs.koin.compose.viewmodel.navigation)
 
             api(libs.kermit)
         }
         commonTest.dependencies {
             api(libs.kotlin.test)
-            @OptIn(ExperimentalComposeLibrary::class)
-            api(compose.uiTest)
         }
         iosMain.dependencies {
 
@@ -61,7 +54,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.apps.designsystem"
+    namespace = "com.apps.config"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
@@ -73,10 +66,6 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildFeatures {
-        compose = true
-    }
-
     lint {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
     }
@@ -85,17 +74,4 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-}
-
-dependencies {
-    implementation(libs.compose.ui.tooling.preview)
-    debugImplementation(libs.compose.ui.tooling)
-    androidTestImplementation(libs.android.compose.ui.junit)
-    debugImplementation(libs.android.compose.ui.test)
-}
-
-compose.resources {
-    packageOfResClass = "com.apps.designsystem"
-    generateResClass = always
-    publicResClass = false
 }
