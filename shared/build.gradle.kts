@@ -51,8 +51,6 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
-            implementation(libs.navigation.compose)
-
             implementation(libs.kermit)
             implementation(libs.crashkios)
             implementation(libs.kermit.koin)
@@ -96,7 +94,7 @@ dependencies {
 }
 
 compose.resources {
-    packageOfResClass = "com.apps.usergen"
+    packageOfResClass = "com.apps.shared"
     generateResClass = always
     publicResClass = false
 }

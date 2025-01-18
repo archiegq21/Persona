@@ -78,3 +78,9 @@ dependencies {
     androidTestImplementation(libs.android.compose.ui.junit)
     debugImplementation(libs.android.compose.ui.test)
 }
+
+compose.resources {
+    packageOfResClass = "com.apps.usergen"
+    generateResClass = always
+    publicResClass = false
+}

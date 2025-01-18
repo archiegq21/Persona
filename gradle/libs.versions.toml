@@ -10,6 +10,8 @@ serialization = "1.8.0"
 # Comose Multiplatform
 compose = "1.7.3"
 navigation = "2.8.0-alpha10"
+adaptive = "1.0.0"
+window-size = "1.7.3"
 # Android Compose
 compose-android = "1.7.6"
 androidx-activityCompose = "1.10.0"
@@ -36,6 +38,10 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotl
 serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 # Compose Multiplatform
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation" }
+window-size = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "window-size" }
+adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "adaptive" }
+adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "adaptive" }
+adaptive-navigation = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation", version.ref = "adaptive" }
 # Android Compose
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-android" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose-android" }

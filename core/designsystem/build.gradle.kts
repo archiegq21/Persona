@@ -46,6 +46,12 @@ kotlin {
             api(compose.ui)
             api(compose.components.resources)
             api(compose.components.uiToolingPreview)
+            api(compose.material3AdaptiveNavigationSuite)
+            api(libs.window.size)
+            api(libs.adaptive)
+            api(libs.adaptive.layout)
+            api(libs.adaptive.navigation)
+            api(libs.navigation.compose)
 
             api(libs.kermit)
         }
