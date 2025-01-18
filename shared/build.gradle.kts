@@ -39,6 +39,7 @@ kotlin {
     
     sourceSets {
         commonMain.dependencies {
+            implementation(projects.core.config)
             implementation(projects.core.designsystem)
 
             implementation(compose.runtime)
@@ -51,6 +52,7 @@ kotlin {
 
             implementation(libs.kermit)
             implementation(libs.crashkios)
+            implementation(libs.kermit.koin)
             implementation(libs.kermit.crashylytics)
         }
         commonTest.dependencies {
