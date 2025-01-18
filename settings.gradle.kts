@@ -21,4 +21,5 @@ include(
     ":shared",
     ":core:config",
     ":core:designsystem",
+    ":feature:usergen",
 )

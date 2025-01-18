@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.serialization)
     alias(libs.plugins.cocoapods)
 }
 
@@ -22,51 +23,35 @@ kotlin {
     iosSimulatorArm64()
 
     cocoapods {
-        summary = "Shared Module"
-        homepage = "Dwell Students Homepage"
         version = "1.0"
-        ios.deploymentTarget = libs.versions.ios.target.get()
-        podfile = project.file("../iosApp/Podfile")
+        summary = "User Generator"
+        homepage = "User Generator"
         framework {
-            baseName = "shared"
+            baseName = "usergen"
             isStatic = true
         }
-
-        pod("FirebaseCrashlytics") {
-            extraOpts += listOf("-compiler-option", "-fmodules")
-        }
+        podfile = project.file("../../iosApp/Podfile")
     }
-    
+
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.config)
             implementation(projects.core.designsystem)
-            implementation(projects.feature.usergen)
-
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            implementation(compose.materialIconsExtended)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
-
+            
             implementation(libs.navigation.compose)
 
-            implementation(libs.kermit)
-            implementation(libs.crashkios)
-            implementation(libs.kermit.koin)
-            implementation(libs.kermit.crashylytics)
-        }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
+            implementation(libs.serialization)
         }
     }
 }
 
 android {
-    namespace = "com.apps.shared"
+    namespace = "com.apps.usergen"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
+
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    sourceSets["main"].res.srcDirs("src/androidMain/res")
+    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
@@ -90,13 +75,6 @@ android {
 dependencies {
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
-
     androidTestImplementation(libs.android.compose.ui.junit)
     debugImplementation(libs.android.compose.ui.test)
-}
-
-compose.resources {
-    packageOfResClass = "com.apps.usergen"
-    generateResClass = always
-    publicResClass = false
 }
