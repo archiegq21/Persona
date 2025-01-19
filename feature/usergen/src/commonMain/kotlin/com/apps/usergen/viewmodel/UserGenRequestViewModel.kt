@@ -3,7 +3,7 @@ package com.apps.usergen.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apps.usergen.data.Gender
+import com.apps.model.Gender
 import com.apps.usergen.ui.request.GenUserParams
 import com.apps.usergen.viewmodel.UserGenUiState.ValidatedCount
 import kotlinx.coroutines.flow.MutableStateFlow

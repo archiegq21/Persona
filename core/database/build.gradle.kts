@@ -4,8 +4,8 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.room)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.serialization)
     alias(libs.plugins.cocoapods)
 }
@@ -24,43 +24,48 @@ kotlin {
 
     cocoapods {
         version = "1.0"
-        summary = "User Generator"
-        homepage = "User Generator"
+        summary = "Database"
+        homepage = "Database"
         framework {
-            baseName = "usergen"
+            baseName = "database"
             isStatic = true
         }
         podfile = project.file("../../iosApp/Podfile")
     }
 
     sourceSets {
-        commonMain.dependencies {
-            implementation(projects.core.config)
-            implementation(projects.core.database)
-            implementation(projects.core.designsystem)
-            implementation(projects.core.model)
-            implementation(projects.library.paging)
+        commonMain {
+            kotlin.srcDir("build/generated/ksp/metadata")
+            dependencies {
+                implementation(projects.core.config)
+                implementation(projects.core.model)
 
-            implementation(libs.navigation.compose)
+                implementation(libs.room.runtime)
+                implementation(libs.room.paging)
+                implementation(libs.sqlite.bundled)
 
-            implementation(libs.serialization)
-            implementation(libs.androidx.paging.common)
+                implementation(libs.serialization)
+            }
         }
         commonTest.dependencies {
-            implementation(libs.kotlin.test)
-
-            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-            implementation(compose.uiTest)
-
-            implementation(libs.koin.test)
-
-            implementation(libs.androidx.paging.testing)
+            api(libs.kotlin.test)
         }
     }
 }
 
+dependencies {
+    add("kspAndroid", libs.room.compiler)
+    add("kspIosSimulatorArm64", libs.room.compiler)
+    add("kspIosX64", libs.room.compiler)
+    add("kspIosArm64", libs.room.compiler)
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
 android {
-    namespace = "com.apps.usergen"
+    namespace = "com.apps.database"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
@@ -70,10 +75,6 @@ android {
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildFeatures {
-        compose = true
     }
 
     lint {
@@ -86,15 +87,3 @@ android {
     }
 }
 
-dependencies {
-    implementation(libs.compose.ui.tooling.preview)
-    debugImplementation(libs.compose.ui.tooling)
-    androidTestImplementation(libs.android.compose.ui.junit)
-    debugImplementation(libs.android.compose.ui.test)
-}
-
-compose.resources {
-    packageOfResClass = "com.apps.usergen"
-    generateResClass = always
-    publicResClass = false
-}

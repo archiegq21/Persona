@@ -9,12 +9,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
-import androidx.navigation.compose.navigation
 import androidx.navigation.toRoute
-import com.apps.usergen.data.Gender
 import com.apps.usergen.ui.request.GenUserParams
 import com.apps.usergen.ui.request.UserGenRequestRoute
-import com.apps.usergen.ui.usergen.UserGenListRoute
+import com.apps.usergen.ui.usergen.UserCollectionRoute
 import kotlinx.serialization.Serializable
 
 sealed interface UserGenNavDestination {
@@ -48,7 +46,7 @@ fun NavGraphBuilder.userGenNavGraph(
         enterTransition = { fadeIn() },
         exitTransition = { fadeOut() },
     ) {
-        UserGenListRoute(
+        UserCollectionRoute(
             onGenerateUser = {
                 navController.navigate(UserGenNavDestination.UserGenRequest)
             },

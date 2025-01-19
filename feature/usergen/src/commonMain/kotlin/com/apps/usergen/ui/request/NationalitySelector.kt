@@ -15,7 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.apps.usergen.Res
-import com.apps.usergen.data.Nationality
+import com.apps.model.Nationality
 import org.jetbrains.compose.resources.stringResource
 import com.apps.usergen.nationality_any
 import com.apps.usergen.select_nationality

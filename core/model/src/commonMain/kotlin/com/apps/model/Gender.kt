@@ -1,4 +1,4 @@
-package com.apps.usergen.data
+package com.apps.model
 
 enum class Gender {
     Male,

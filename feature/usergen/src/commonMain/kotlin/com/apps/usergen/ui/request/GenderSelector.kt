@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.unit.dp
 import com.apps.usergen.Res
-import com.apps.usergen.data.Gender
+import com.apps.model.Gender
 import com.apps.usergen.gender_any
 import com.apps.usergen.gender_female
 import com.apps.usergen.gender_male
@@ -44,7 +44,6 @@ fun GenderSelector(
     onGenderSelected: (Gender?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val focusRequester = remember { FocusRequester() }
     var expanded by remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
