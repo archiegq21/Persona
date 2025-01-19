@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
+import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -23,36 +24,38 @@ kotlin {
     iosSimulatorArm64()
 
     cocoapods {
+        ios.deploymentTarget = libs.versions.ios.target.get()
         version = "1.0"
-        summary = "User Generator"
-        homepage = "User Generator"
+        summary = "Paging"
+        homepage = "Paging"
         framework {
-            baseName = "usergen"
+            baseName = "paging"
             isStatic = true
         }
         podfile = project.file("../../iosApp/Podfile")
     }
 
     sourceSets {
+        androidMain.dependencies {
+            implementation(libs.androidx.activity.ktx)
+            implementation(libs.androidx.activity.compose)
+        }
         commonMain.dependencies {
-            implementation(projects.core.config)
-            implementation(projects.core.database)
-            implementation(projects.core.designsystem)
-            implementation(projects.core.model)
-            implementation(projects.library.paging)
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.materialIconsExtended)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
 
-            implementation(libs.navigation.compose)
-
-            implementation(libs.serialization)
             implementation(libs.androidx.paging.common)
         }
         commonTest.dependencies {
-            implementation(libs.kotlin.test)
-
-            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
 
-            implementation(libs.koin.test)
+            implementation(libs.kotlin.test)
 
             implementation(libs.androidx.paging.testing)
         }
@@ -60,7 +63,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.apps.usergen"
+    namespace = "com.library.paging"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
@@ -84,17 +87,4 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-}
-
-dependencies {
-    implementation(libs.compose.ui.tooling.preview)
-    debugImplementation(libs.compose.ui.tooling)
-    androidTestImplementation(libs.android.compose.ui.junit)
-    debugImplementation(libs.android.compose.ui.test)
-}
-
-compose.resources {
-    packageOfResClass = "com.apps.usergen"
-    generateResClass = always
-    publicResClass = false
 }

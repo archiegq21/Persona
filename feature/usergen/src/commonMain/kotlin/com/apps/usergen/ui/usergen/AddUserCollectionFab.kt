@@ -20,7 +20,7 @@ import org.jetbrains.compose.resources.stringResource
 private val FabTransformOrigin = TransformOrigin(1f, 0.5f)
 
 @Composable
-internal fun AddGenUserFab(
+internal fun AddUserCollectionFab(
     onClick: () -> Unit,
     visible: Boolean = true,
     expanded: Boolean = true,

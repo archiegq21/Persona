@@ -20,6 +20,9 @@ include(
     ":androidApp",
     ":shared",
     ":core:config",
+    ":core:database",
     ":core:designsystem",
+    ":core:model",
     ":feature:usergen",
+    ":library:paging",
 )

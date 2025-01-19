@@ -3,9 +3,13 @@ package com.apps.usergen.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apps.usergen.data.Gender
-import com.apps.usergen.ui.request.GenUserParams
+import co.touchlab.kermit.Logger
+import com.apps.model.Gender
+import com.apps.usergen.data.UserCollection
+import com.apps.usergen.repository.UserCollectionRepository
 import com.apps.usergen.viewmodel.UserGenUiState.ValidatedCount
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -14,6 +18,14 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
+
+data class GenUserParams(
+    val id: String,
+)
 
 data class UserGenUiState(
     val count: String = "",
@@ -39,6 +51,7 @@ data class UserGenUiState(
 
 class UserGenRequestViewModel(
     private val savedStateHandle: SavedStateHandle,
+    private val repository: UserCollectionRepository,
 ) : ViewModel() {
 
     private val countState = savedStateHandle.getStateFlow(COUNT_KEY, "")
@@ -84,16 +97,30 @@ class UserGenRequestViewModel(
         countFocused.update { true }
     }
 
+    @OptIn(ExperimentalUuidApi::class)
     fun onGenerateUser(
         validatedCount: ValidatedCount?,
         gender: Gender?,
     ) {
-        generateUserState.update {
-            if (validatedCount !is ValidatedCount.Valid) return@update null
-            GenUserParams(
-                userCount = validatedCount.count,
-                gender = gender,
-            )
+        viewModelScope.launch {
+            try {
+                if (validatedCount !is ValidatedCount.Valid) return@launch
+
+                val id = Uuid.random().toHexString()
+                val userCollection = UserCollection(
+                    id = id,
+                    count = validatedCount.count,
+                    gender = gender,
+                )
+
+                withContext(Dispatchers.IO) {
+                    repository.addUserCollection(userCollection)
+                }
+
+                generateUserState.update { GenUserParams(id = id) }
+            } catch (e: Exception) {
+                Logger.e("Error", e, tag = "Error")
+            }
         }
     }
 

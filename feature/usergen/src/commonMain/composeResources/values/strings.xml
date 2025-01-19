@@ -1,4 +1,6 @@
 <resources>
+    <string name="user_gen_title">My User Collection</string>
+
     <string name="request_form_title">Generate Users</string>
 
     <string name="user_count">How many?</string>
@@ -11,9 +13,11 @@
     <string name="select_nationality">Nationality?</string>
     <string name="nationality_any">Any</string>
 
-    <string name="add_generated_user">Generate User</string>
+    <string name="add_generated_user">Generate Users</string>
     <string name="generate">Generate</string>
 
     <string name="invalid_count">Hmm.. that's not a valid count</string>
     <string name="zero_count">Ops! Zero isn't a valid count</string>
+
+    <string name="empty_user_collection">Looks like you don't have any users yet</string>
 </resources>

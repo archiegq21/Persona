@@ -26,21 +26,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apps.usergen.Res
-import com.apps.usergen.data.Gender
+import com.apps.model.Gender
 import com.apps.usergen.generate
 import com.apps.usergen.request_form_title
 import com.apps.usergen.user_count
 import com.apps.usergen.zero_count
 import com.apps.usergen.invalid_count
+import com.apps.usergen.viewmodel.GenUserParams
 import com.apps.usergen.viewmodel.UserGenRequestViewModel
 import com.apps.usergen.viewmodel.UserGenUiState.ValidatedCount
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-
-data class GenUserParams(
-    val userCount: Int,
-    val gender: Gender?,
-)
 
 @Composable
 fun UserGenRequestRoute(
