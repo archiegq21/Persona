@@ -18,11 +18,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Female
 import androidx.compose.material.icons.rounded.Male
@@ -49,16 +46,16 @@ import com.apps.usergen.Res
 import com.apps.usergen.data.User
 import com.apps.usergen.gender_female
 import com.apps.usergen.gender_male
-import com.apps.usergen.username
-import com.apps.usergen.password
-import com.apps.usergen.uuid
 import com.apps.usergen.md5
+import com.apps.usergen.password
 import com.apps.usergen.salt
 import com.apps.usergen.sha1
 import com.apps.usergen.sha256
 import com.apps.usergen.ui.users.DisplayAddress
 import com.apps.usergen.ui.users.PlaceholderImage
 import com.apps.usergen.ui.util.toFullname
+import com.apps.usergen.username
+import com.apps.usergen.uuid
 import com.apps.usergen.viewmodel.UserDetailViewModel
 import com.apps.usergen.viewmodel.UserState
 import kotlinx.datetime.LocalDateTime
@@ -98,17 +95,10 @@ private fun UserDetailScreen(
         modifier = modifier.fillMaxSize(),
     ) { state ->
         when (state) {
-            UserState.Loading -> LoadingUserDetailsScreen()
+            UserState.Loading -> { Box(Modifier.fillMaxSize()) }
             is UserState.Found -> FoundUserDetailsScreen(user = state.user)
         }
     }
-}
-
-@Composable
-private fun LoadingUserDetailsScreen(
-    modifier: Modifier = Modifier,
-) {
-    Box(modifier = modifier.fillMaxSize())
 }
 
 @Composable
@@ -182,13 +172,14 @@ private fun LazyListScope.userDetails(
             Spacer(Modifier.height(4.dp))
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = dob.date.toLocalDateTime(TimeZone.currentSystemDefault()).format(LocalDateTime.Format {
-                    dayOfMonth()
-                    char(' ')
-                    monthName(MonthNames.ENGLISH_FULL)
-                    char(' ')
-                    year()
-                }),
+                text = dob.date.toLocalDateTime(TimeZone.currentSystemDefault())
+                    .format(LocalDateTime.Format {
+                        dayOfMonth()
+                        char(' ')
+                        monthName(MonthNames.ENGLISH_FULL)
+                        char(' ')
+                        year()
+                    }),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.titleMedium,
             )

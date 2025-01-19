@@ -34,4 +34,5 @@
     <string name="select_user">Select a User to View Details</string>
 
     <string name="back">Back</string>
+    <string name="retry">Retry</string>
 </resources>
