@@ -41,6 +41,7 @@ kotlin {
             implementation(projects.core.model)
             implementation(projects.core.network)
             implementation(projects.library.paging)
+            implementation(projects.library.placeholder)
 
             implementation(libs.navigation.compose)
 

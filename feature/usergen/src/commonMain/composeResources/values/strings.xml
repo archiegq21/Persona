@@ -31,5 +31,7 @@
     <string name="sha256">sha256</string>
     <string name="salt">salt</string>
 
+    <string name="select_user">Select a User to View Details</string>
+
     <string name="back">Back</string>
 </resources>

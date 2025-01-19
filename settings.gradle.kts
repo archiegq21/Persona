@@ -26,4 +26,5 @@ include(
     ":core:model",
     ":feature:usergen",
     ":library:paging",
+    ":library:placeholder",
 )
