@@ -37,6 +37,7 @@ kotlin {
         androidMain.dependencies {
             api(libs.androidx.activity.ktx)
             api(libs.androidx.activity.compose)
+            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             api(compose.runtime)
@@ -53,6 +54,9 @@ kotlin {
             api(libs.adaptive.navigation)
             api(libs.navigation.compose)
 
+            api(libs.coil.compose)
+            implementation(libs.coil.network.ktor)
+
             api(libs.kermit)
         }
         commonTest.dependencies {
@@ -61,7 +65,7 @@ kotlin {
             api(compose.uiTest)
         }
         iosMain.dependencies {
-
+            implementation(libs.ktor.client.darwin)
         }
     }
 }

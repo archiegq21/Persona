@@ -14,7 +14,7 @@ interface UserCollectionDao {
     fun getPagedUserCollection(): PagingSource<Int, UserCollectionEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUserCollection(userCollection: UserCollectionEntity)
+    suspend fun insertUserCollection(userCollection: UserCollectionEntity)
 
     @Query("DELETE FROM UserCollection WHERE id = :id")
     suspend fun deleteUserCollectionBy(id: String)

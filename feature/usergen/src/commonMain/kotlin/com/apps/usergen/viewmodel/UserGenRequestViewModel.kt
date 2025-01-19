@@ -113,9 +113,7 @@ class UserGenRequestViewModel(
                     gender = gender,
                 )
 
-                withContext(Dispatchers.IO) {
-                    repository.addUserCollection(userCollection)
-                }
+                repository.addUserCollection(userCollection)
 
                 generateUserState.update { GenUserParams(id = id) }
             } catch (e: Exception) {

@@ -4,6 +4,8 @@ import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
+import androidx.room.TypeConverters
+import com.apps.database.converts.LocalDateTimeConverter
 import com.apps.database.dao.UserCollectionDao
 import com.apps.database.data.UserCollectionEntity
 
@@ -16,6 +18,9 @@ internal expect object PersonaDatabaseConstructor : RoomDatabaseConstructor<Pers
     entities = [
         UserCollectionEntity::class,
     ], version = 1
+)
+@TypeConverters(
+    LocalDateTimeConverter::class,
 )
 @ConstructedBy(PersonaDatabaseConstructor::class)
 abstract class PersonaDatabase : RoomDatabase() {
