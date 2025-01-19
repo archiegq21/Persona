@@ -14,3 +14,9 @@ fun UserCollectionEntity.toModel() = UserCollection(
     count = count,
     gender = gender,
 )
+
+fun UserCollection.toEntity() = UserCollectionEntity(
+    id = id,
+    count = count,
+    gender = gender,
+)

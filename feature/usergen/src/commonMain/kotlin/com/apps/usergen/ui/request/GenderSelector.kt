@@ -89,7 +89,7 @@ fun GenderSelector(
 }
 
 @Composable
-private fun GenderIcon(
+internal fun GenderIcon(
     gender: Gender?,
     modifier: Modifier = Modifier
 ) {

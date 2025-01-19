@@ -54,6 +54,7 @@ import com.apps.usergen.data.UserCollection
 import com.apps.usergen.ui.assets.EmptyHero
 import com.apps.usergen.user_gen_title
 import com.apps.usergen.empty_user_collection
+import com.apps.usergen.viewmodel.GenUserParams
 import com.apps.usergen.viewmodel.UserCollectionViewModel
 import com.library.paging.LazyPagingItems
 import com.library.paging.collectAsLazyPagingItems
@@ -65,6 +66,7 @@ import com.library.paging.items
 @Composable
 internal fun UserCollectionRoute(
     onGenerateUser: () -> Unit,
+    onViewUserCollection: (GenUserParams) -> Unit,
     viewModel: UserCollectionViewModel = koinViewModel(),
     modifier: Modifier = Modifier,
 ) {
@@ -72,6 +74,7 @@ internal fun UserCollectionRoute(
 
     UserCollectionScreen(
         onGenerateUser = onGenerateUser,
+        onViewUserCollection = onViewUserCollection,
         userCollection = userCollection,
         modifier = modifier,
     )
@@ -81,6 +84,7 @@ internal fun UserCollectionRoute(
 @Composable
 private fun UserCollectionScreen(
     onGenerateUser: () -> Unit,
+    onViewUserCollection: (GenUserParams) -> Unit,
     userCollection: LazyPagingItems<UserCollection>,
     modifier: Modifier = Modifier,
 ) {
@@ -133,6 +137,7 @@ private fun UserCollectionScreen(
                     onGenerateUser = onGenerateUser,
                     modifier = Modifier.padding(contentPadding).fillMaxSize()
                 )
+
                 false -> LazyVerticalStaggeredGrid(
                     state = state,
                     contentPadding = contentPadding,
@@ -141,12 +146,12 @@ private fun UserCollectionScreen(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    items(userCollection, key = { it.id }) { index, item ->
-                        ElevatedCard(
-                            modifier = Modifier.fillMaxWidth().height(200.dp),
-                        ) {
-
-                        }
+                    items(userCollection, key = { it.id }) { _, item ->
+                        UserCollectionCard(
+                            onClick = { onViewUserCollection(GenUserParams(item.id)) },
+                            modifier = Modifier.fillMaxWidth(),
+                            collection = item,
+                        )
                     }
                 }
             }

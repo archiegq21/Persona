@@ -11,6 +11,7 @@ val userGenModule = module {
 
     viewModel {
         UserGenRequestViewModel(
+            repository = get(),
             savedStateHandle = get(),
         )
     }

@@ -2,6 +2,8 @@ package com.apps.database.dao
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.apps.database.data.UserCollectionEntity
 
@@ -10,6 +12,9 @@ import com.apps.database.data.UserCollectionEntity
 interface UserCollectionDao {
     @Query("SELECT * FROM UserCollection")
     fun getPagedUserCollection(): PagingSource<Int, UserCollectionEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertUserCollection(userCollection: UserCollectionEntity)
 
     @Query("DELETE FROM UserCollection WHERE id = :id")
     suspend fun deleteUserCollectionBy(id: String)
