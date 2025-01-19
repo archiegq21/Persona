@@ -22,6 +22,7 @@ include(
     ":core:config",
     ":core:database",
     ":core:designsystem",
+    ":core:network",
     ":core:model",
     ":feature:usergen",
     ":library:paging",

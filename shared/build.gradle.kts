@@ -42,6 +42,7 @@ kotlin {
             implementation(projects.core.config)
             implementation(projects.core.database)
             implementation(projects.core.designsystem)
+            implementation(projects.core.network)
             implementation(projects.feature.usergen)
 
             implementation(compose.runtime)
