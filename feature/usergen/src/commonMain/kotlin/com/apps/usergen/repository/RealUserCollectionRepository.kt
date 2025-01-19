@@ -21,7 +21,7 @@ internal class RealUserCollectionRepository(
         it.map(UserCollectionEntity::toModel)
     }
 
-    override fun addUserCollection(userCollection: UserCollection) {
+    override suspend fun addUserCollection(userCollection: UserCollection) {
         userCollectionDao.insertUserCollection(userCollection.toEntity())
     }
 }

@@ -7,5 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface UserCollectionRepository {
     fun getPagedUserCollection(): Flow<PagingData<UserCollection>>
 
-    fun addUserCollection(userCollection: UserCollection)
+    suspend fun addUserCollection(userCollection: UserCollection)
 }

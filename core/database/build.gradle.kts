@@ -45,6 +45,7 @@ kotlin {
                 implementation(libs.sqlite.bundled)
 
                 implementation(libs.serialization)
+                implementation(libs.kotlinx.datetime)
             }
         }
         commonTest.dependencies {
