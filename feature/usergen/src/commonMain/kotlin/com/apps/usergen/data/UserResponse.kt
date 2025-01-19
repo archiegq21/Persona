@@ -1,9 +1,11 @@
 package com.apps.usergen.data
 
+import com.apps.database.data.UserEntity
 import com.apps.model.Gender
 import com.apps.model.Nationality
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import kotlin.math.log
 
 @Serializable
 data class UserResponse(
@@ -106,3 +108,64 @@ data class UserResponse(
         val version: String
     )
 }
+
+fun UserResponse.User.toEntity(
+    collectionId: String,
+): UserEntity = UserEntity(
+    userId = login.uuid,
+    collectionId = collectionId,
+    id = UserEntity.Id(
+        name = id.name,
+        value = id.value
+    ),
+    gender = gender,
+    name = UserEntity.Name(
+        title = name.title,
+        first = name.first,
+        last = name.last
+    ),
+    location = UserEntity.Location(
+        street = UserEntity.Street(
+            number = location.street.number,
+            name = location.street.name
+        ),
+        city = location.city,
+        state = location.state,
+        country = location.country,
+        postcode = location.postcode,
+        coordinates = UserEntity.Coordinates(
+            latitude = location.coordinates.latitude,
+            longitude = location.coordinates.longitude
+        ),
+        timezone = UserEntity.Timezone(
+            offset = location.timezone.offset,
+            description = location.timezone.description
+        ),
+    ),
+    email = email,
+    login = UserEntity.Login(
+        uuid = login.uuid,
+        username = login.username,
+        password = login.password,
+        salt = login.salt,
+        md5 = login.md5,
+        sha1 = login.sha1,
+        sha256 = login.sha256,
+    ),
+    dob = UserEntity.Dob(
+        date = dob.date,
+        age = dob.age
+    ),
+    registered = UserEntity.Registered(
+        date = registered.date,
+        age = registered.age
+    ),
+    phone = phone,
+    cell = cell,
+    picture = UserEntity.Picture(
+        large = picture.large,
+        medium = picture.medium,
+        thumbnail = picture.thumbnail
+    ),
+    nat = nat,
+)

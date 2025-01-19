@@ -1,14 +1,31 @@
 package com.apps.database.data
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 import com.apps.model.Gender
 import com.apps.model.Nationality
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
-@Entity(tableName = "User")
+@Entity(
+    tableName = "User",
+    foreignKeys = [
+        ForeignKey(
+            entity = UserCollectionEntity::class,
+            parentColumns = ["id"],
+            childColumns = ["collectionId"],
+            onUpdate = ForeignKey.CASCADE,
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class UserEntity(
+    @PrimaryKey val userId: String,
+    @ColumnInfo(index = true) val collectionId: String,
+    @Embedded("id") val id: Id,
     val gender: Gender,
     @Embedded("name") val name: Name,
     @Embedded("location") val location: Location,
@@ -18,7 +35,6 @@ data class UserEntity(
     @Embedded("registered") val registered: Registered,
     val phone: String,
     val cell: String,
-    @Embedded("id") val id: Id,
     @Embedded("picture") val picture: Picture,
     val nat: Nationality
 ) {
