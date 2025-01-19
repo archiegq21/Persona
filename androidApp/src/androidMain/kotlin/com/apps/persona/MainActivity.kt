@@ -31,6 +31,6 @@ class MainActivity : AppCompatActivity() {
 
 @Preview
 @Composable
-fun Preview() {
+fun PersonaAppPreview() {
     PersonaApp()
 }
