@@ -49,6 +49,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import com.apps.usergen.back
+import com.apps.usergen.ui.userdetails.UserDetailRoute
 
 sealed interface UserGenNavDestination {
     @Serializable
@@ -60,11 +61,13 @@ sealed interface UserGenNavDestination {
     @Serializable
     data class UsersList(
         val id: String,
+        val name: String,
     ) : UserGenNavDestination {
 
         companion object {
             operator fun invoke(params: GenUserParams) = UsersList(
                 id = params.id,
+                name = params.name,
             )
         }
     }
@@ -118,7 +121,7 @@ fun NavGraphBuilder.userGenNavGraph(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
             topBar = {
                 CenterAlignedTopAppBar(
-                    title = { Text(params.id) },
+                    title = { Text(params.name.ifEmpty { params.id }) },
                     navigationIcon = {
                         IconButton(
                             onClick = {
@@ -161,13 +164,11 @@ fun NavGraphBuilder.userGenNavGraph(
                 },
                 detailPane = {
                     AnimatedPane {
-                        navigator.currentDestination?.content?.let { it ->
-                            Box(
+                        navigator.currentDestination?.content?.let { userId ->
+                            UserDetailRoute(
+                                userId = userId,
                                 modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                Text(text = it)
-                            }
+                            )
                         }
                     }
                 },

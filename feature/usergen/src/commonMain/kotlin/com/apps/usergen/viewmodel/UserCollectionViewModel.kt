@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class UserCollectionViewModel(
-    private val repository: UserCollectionRepository,
+    repository: UserCollectionRepository,
 ): ViewModel() {
 
     val pagedUserCollection: Flow<PagingData<UserCollection>> =

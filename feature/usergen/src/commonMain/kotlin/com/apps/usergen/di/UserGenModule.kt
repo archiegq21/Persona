@@ -7,6 +7,7 @@ import com.apps.usergen.repository.UserCollectionRepository
 import com.apps.usergen.repository.UserRemoteSource
 import com.apps.usergen.repository.UserRepository
 import com.apps.usergen.viewmodel.UserCollectionViewModel
+import com.apps.usergen.viewmodel.UserDetailViewModel
 import com.apps.usergen.viewmodel.UserGenRequestViewModel
 import com.apps.usergen.viewmodel.UserListViewModel
 import org.koin.core.module.dsl.viewModel
@@ -30,6 +31,12 @@ val userGenModule = module {
     viewModel { params ->
         UserListViewModel(
             collectionId = params.get(),
+            repository = get(),
+        )
+    }
+
+    viewModel {
+        UserDetailViewModel(
             repository = get(),
         )
     }

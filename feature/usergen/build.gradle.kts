@@ -44,6 +44,7 @@ kotlin {
 
             implementation(libs.navigation.compose)
 
+            implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
             implementation(libs.serialization)
             implementation(libs.androidx.paging.common)

@@ -19,6 +19,7 @@ import androidx.compose.material.icons.rounded.Image
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,13 +30,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.SubcomposeAsyncImage
+import com.apps.database.data.UserEntity
 import com.apps.usergen.data.User
+import com.apps.usergen.ui.util.toFullname
 
-private const val PlaceIconId = "PlaceIconId"
+
 
 @Composable
 internal fun UserCard(
@@ -76,39 +81,56 @@ internal fun UserCard(
                 verticalArrangement = Arrangement.Top,
             ) {
                 Text(
-                    text = "${user.name.title} ${user.name.first} ${user.name.last}",
+                    text = user.name.toFullname(),
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(Modifier.height(8.dp))
-                Text(
-                    text = buildAnnotatedString {
-                        appendInlineContent(PlaceIconId, "Place Icon")
-                        append(" ")
-                        append("${user.location.street.number} ${user.location.street.name}, ${user.location.city}, ${user.location.state} ${user.location.postcode}")
-                    },
-                    inlineContent = mapOf(
-                        Pair(
-                            PlaceIconId,
-                            InlineTextContent(
-                                Placeholder(
-                                    width = 16.sp,
-                                    height = 16.sp,
-                                    placeholderVerticalAlign = PlaceholderVerticalAlign.Center
-                                )
-                            ) {
-                                Icon(
-                                    modifier = Modifier.fillMaxSize(),
-                                    imageVector = Icons.Rounded.LocationOn,
-                                    contentDescription = null,
-                                )
-                            }
-                        )
-                    ),
-                    style = MaterialTheme.typography.bodySmall
+                DisplayAddress(
+                    location = user.location,
+                    style = MaterialTheme.typography.bodySmall,
                 )
             }
         }
     }
+}
+
+private const val PlaceIconId = "PlaceIconId"
+
+@Composable
+internal fun DisplayAddress(
+    location: User.Location,
+    modifier: Modifier = Modifier,
+    textAlign: TextAlign? = null,
+    style: TextStyle = LocalTextStyle.current,
+) {
+    Text(
+        modifier = modifier,
+        text = buildAnnotatedString {
+            appendInlineContent(PlaceIconId, "Place Icon")
+            append(" ")
+            append("${location.street.number} ${location.street.name}, ${location.city}, ${location.state} ${location.postcode}")
+        },
+        inlineContent = mapOf(
+            Pair(
+                PlaceIconId,
+                InlineTextContent(
+                    Placeholder(
+                        width = 16.sp,
+                        height = 16.sp,
+                        placeholderVerticalAlign = PlaceholderVerticalAlign.Center
+                    )
+                ) {
+                    Icon(
+                        modifier = Modifier.fillMaxSize(),
+                        imageVector = Icons.Rounded.LocationOn,
+                        contentDescription = null,
+                    )
+                }
+            )
+        ),
+        textAlign = textAlign,
+        style = style,
+    )
 }
 
 @Composable

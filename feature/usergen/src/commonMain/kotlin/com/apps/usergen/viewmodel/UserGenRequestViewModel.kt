@@ -8,8 +8,6 @@ import com.apps.model.Gender
 import com.apps.usergen.data.UserCollection
 import com.apps.usergen.repository.UserCollectionRepository
 import com.apps.usergen.viewmodel.UserGenUiState.ValidatedCount
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -19,18 +17,18 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 data class GenUserParams(
     val id: String,
+    val name: String,
 )
 
 data class UserGenUiState(
     val count: String = "",
     val validatedCount: ValidatedCount? = null,
-    val gender: Gender? = null,
+    val name: String = "",
     val generateUserParams: GenUserParams? = null,
 ) {
 
@@ -67,20 +65,20 @@ class UserGenRequestViewModel(
             else -> ValidatedCount.Valid(count)
         }
     }
-    private val genderState = savedStateHandle.getStateFlow(GENDER_KEY, null)
+    private val nameState = savedStateHandle.getStateFlow(NAME_KEY, "")
 
     private val generateUserState = MutableStateFlow<GenUserParams?>(null)
 
     val uiState: StateFlow<UserGenUiState> = combine(
         countState,
         countErrorState,
-        genderState,
+        nameState,
         generateUserState,
-    ) { count, countError, gender, genUserParams ->
+    ) { count, countError, name, genUserParams ->
         UserGenUiState(
             count = count,
             validatedCount = countError,
-            gender = gender,
+            name = name,
             generateUserParams = genUserParams,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), UserGenUiState())
@@ -89,8 +87,8 @@ class UserGenRequestViewModel(
         savedStateHandle[COUNT_KEY] = count
     }
 
-    fun setGender(gender: Gender?) {
-        savedStateHandle[GENDER_KEY] = gender
+    fun setName(name: String) {
+        savedStateHandle[NAME_KEY] = name
     }
 
     fun onCountFocused() {
@@ -100,7 +98,7 @@ class UserGenRequestViewModel(
     @OptIn(ExperimentalUuidApi::class)
     fun onGenerateUser(
         validatedCount: ValidatedCount?,
-        gender: Gender?,
+        name: String,
     ) {
         viewModelScope.launch {
             try {
@@ -110,12 +108,17 @@ class UserGenRequestViewModel(
                 val userCollection = UserCollection(
                     id = id,
                     count = validatedCount.count,
-                    gender = gender,
+                    name = name,
                 )
 
                 repository.addUserCollection(userCollection)
 
-                generateUserState.update { GenUserParams(id = id) }
+                generateUserState.update {
+                    GenUserParams(
+                        id = id,
+                        name = name,
+                    )
+                }
             } catch (e: Exception) {
                 Logger.e("Error", e, tag = "Error")
             }
@@ -128,6 +131,6 @@ class UserGenRequestViewModel(
 
     companion object {
         private const val COUNT_KEY = "Count"
-        private const val GENDER_KEY = "Gender"
+        private const val NAME_KEY = "Name"
     }
 }

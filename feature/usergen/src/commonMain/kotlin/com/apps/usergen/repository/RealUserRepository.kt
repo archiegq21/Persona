@@ -20,6 +20,9 @@ internal class RealUserRepository(
     private val userDao: UserDao,
 ): UserRepository {
 
+    override fun getUserBy(userId: String): Flow<User> =
+        userDao.getUserBy(userId).map { it.toModel() }
+
     @OptIn(ExperimentalCoroutinesApi::class, ExperimentalPagingApi::class)
     override fun getPagedUsersForCollection(collectionId: String): Flow<PagingData<User>> =
         userCollectionDao.getUserCollectionBy(collectionId).flatMapLatest { userCollection ->

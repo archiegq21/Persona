@@ -8,10 +8,14 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.apps.database.data.UserCollectionEntity
 import com.apps.database.data.UserEntity
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 interface UserDao {
+    @Query("SELECT * FROM User WHERE userId = :userId")
+    fun getUserBy(userId: String): Flow<UserEntity>
+
     @Query("SELECT * FROM User WHERE collectionId = :collectionId")
     fun getPagedUsers(collectionId: String): PagingSource<Int, UserEntity>
 

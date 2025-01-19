@@ -148,7 +148,7 @@ private fun UserCollectionScreen(
                 ) {
                     items(userCollection, key = { it.id }) { _, item ->
                         UserCollectionCard(
-                            onClick = { onViewUserCollection(GenUserParams(item.id)) },
+                            onClick = { onViewUserCollection(GenUserParams(item.id, item.name)) },
                             modifier = Modifier.fillMaxWidth(),
                             collection = item,
                         )
