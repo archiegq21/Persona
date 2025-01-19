@@ -1,3 +1,4 @@
+import org.jetbrains.compose.ExperimentalComposeLibrary
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
@@ -6,7 +7,6 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.serialization)
     alias(libs.plugins.cocoapods)
 }
 
@@ -24,47 +24,39 @@ kotlin {
 
     cocoapods {
         version = "1.0"
-        summary = "User Generator"
-        homepage = "User Generator"
+        summary = "Placeholder"
+        homepage = "Placeholder"
         framework {
-            baseName = "usergen"
+            baseName = "placeholder"
             isStatic = true
         }
         podfile = project.file("../../iosApp/Podfile")
     }
 
     sourceSets {
+        androidMain.dependencies {
+            implementation(libs.androidx.activity.ktx)
+            implementation(libs.androidx.activity.compose)
+        }
         commonMain.dependencies {
-            implementation(projects.core.config)
-            implementation(projects.core.database)
-            implementation(projects.core.designsystem)
-            implementation(projects.core.model)
-            implementation(projects.core.network)
-            implementation(projects.library.paging)
-            implementation(projects.library.placeholder)
-
-            implementation(libs.navigation.compose)
-
-            implementation(libs.kotlinx.coroutines.core)
-            implementation(libs.kotlinx.datetime)
-            implementation(libs.serialization)
-            implementation(libs.androidx.paging.common)
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+            implementation(compose.material3)
+            implementation(compose.materialIconsExtended)
+            implementation(compose.ui)
+            implementation(compose.components.resources)
+            implementation(compose.components.uiToolingPreview)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
-
-            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
-
-            implementation(libs.koin.test)
-
-            implementation(libs.androidx.paging.testing)
         }
     }
 }
 
 android {
-    namespace = "com.apps.usergen"
+    namespace = "com.library.placeholder"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
@@ -93,12 +85,13 @@ android {
 dependencies {
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
+
     androidTestImplementation(libs.android.compose.ui.junit)
     debugImplementation(libs.android.compose.ui.test)
 }
 
 compose.resources {
-    packageOfResClass = "com.apps.usergen"
+    packageOfResClass = "com.library.placeholder"
     generateResClass = always
     publicResClass = false
 }

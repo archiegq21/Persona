@@ -26,12 +26,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apps.usergen.Res
-import com.apps.model.Gender
 import com.apps.usergen.generate
 import com.apps.usergen.request_form_title
 import com.apps.usergen.user_count
 import com.apps.usergen.zero_count
 import com.apps.usergen.invalid_count
+import com.apps.usergen.collection_name
 import com.apps.usergen.viewmodel.GenUserParams
 import com.apps.usergen.viewmodel.UserGenRequestViewModel
 import com.apps.usergen.viewmodel.UserGenUiState.ValidatedCount
@@ -56,14 +56,14 @@ fun UserGenRequestRoute(
             onCountChanged = viewModel::setCount,
             validatedCount = uiState.validatedCount,
             onCountFocused = viewModel::onCountFocused,
-            gender = uiState.gender,
-            onGenderChanged = viewModel::setGender,
             enabled = uiState.isFormValid,
             generateUserParams = uiState.generateUserParams,
-            onGenerateUserClick = viewModel::onGenerateUser,
+            name = uiState.name,
+            onNameChanged = viewModel::setName,
             consumeGenerateUserParams = viewModel::consumeGenerateUserParams,
             generateUsers = generateUsers,
             modifier = Modifier.fillMaxWidth(),
+            onGenerateUserClick = viewModel::onGenerateUser,
         )
     }
 }
@@ -75,14 +75,14 @@ private fun UserGenListForm(
     count: String,
     onCountChanged: (String) -> Unit,
     validatedCount: ValidatedCount?,
+    name: String,
+    onNameChanged: (String) -> Unit,
     onCountFocused: () -> Unit,
-    gender: Gender?,
-    onGenderChanged: (Gender?) -> Unit,
     enabled: Boolean = true,
     generateUserParams: GenUserParams?,
     onGenerateUserClick: (
         validatedCount: ValidatedCount?,
-        gender: Gender?,
+        name: String,
     ) -> Unit,
     consumeGenerateUserParams: () -> Unit,
     modifier: Modifier = Modifier,
@@ -121,6 +121,12 @@ private fun UserGenListForm(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             TextField(
+                value = name,
+                onValueChange = onNameChanged,
+                label = { Text(stringResource(Res.string.collection_name)) },
+                modifier = Modifier.fillMaxWidth(),
+            )
+            TextField(
                 value = count,
                 onValueChange = onCountChanged,
                 label = { Text(stringResource(Res.string.user_count)) },
@@ -146,18 +152,13 @@ private fun UserGenListForm(
                         if (it.isFocused) onCountFocused()
                     },
             )
-            GenderSelector(
-                modifier = Modifier.fillMaxWidth(),
-                selectedGender = gender,
-                onGenderSelected = onGenderChanged,
-            )
         }
         Button(
             enabled = enabled,
             onClick = {
                 onGenerateUserClick(
                     validatedCount,
-                    gender,
+                    name,
                 )
             },
             modifier = Modifier.align(Alignment.End),

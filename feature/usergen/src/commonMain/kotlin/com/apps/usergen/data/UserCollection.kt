@@ -1,22 +1,21 @@
 package com.apps.usergen.data
 
 import com.apps.database.data.UserCollectionEntity
-import com.apps.model.Gender
 
 data class UserCollection(
     val id: String,
+    val name: String,
     val count: Int,
-    val gender: Gender?,
 )
 
 fun UserCollectionEntity.toModel() = UserCollection(
     id = id,
+    name = name,
     count = count,
-    gender = gender,
 )
 
 fun UserCollection.toEntity() = UserCollectionEntity(
     id = id,
+    name = name,
     count = count,
-    gender = gender,
 )

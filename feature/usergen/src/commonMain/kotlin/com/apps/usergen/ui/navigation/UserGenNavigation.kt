@@ -1,10 +1,12 @@
 package com.apps.usergen.ui.navigation
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideOut
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -49,6 +51,8 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import com.apps.usergen.back
+import com.apps.usergen.ui.userdetails.NoSelectedUserScreen
+import com.apps.usergen.ui.userdetails.UserDetailRoute
 
 sealed interface UserGenNavDestination {
     @Serializable
@@ -60,11 +64,13 @@ sealed interface UserGenNavDestination {
     @Serializable
     data class UsersList(
         val id: String,
+        val name: String,
     ) : UserGenNavDestination {
 
         companion object {
             operator fun invoke(params: GenUserParams) = UsersList(
                 id = params.id,
+                name = params.name,
             )
         }
     }
@@ -118,7 +124,7 @@ fun NavGraphBuilder.userGenNavGraph(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
             topBar = {
                 CenterAlignedTopAppBar(
-                    title = { Text(params.id) },
+                    title = { Text(params.name.ifEmpty { params.id }) },
                     navigationIcon = {
                         IconButton(
                             onClick = {
@@ -161,12 +167,19 @@ fun NavGraphBuilder.userGenNavGraph(
                 },
                 detailPane = {
                     AnimatedPane {
-                        navigator.currentDestination?.content?.let { it ->
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                Text(text = it)
+                        AnimatedContent(
+                            targetState = navigator.currentDestination?.content,
+                            transitionSpec = { fadeIn() togetherWith fadeOut() },
+                            label = "UserDetail",
+                            modifier = Modifier.fillMaxSize(),
+                        ) { content ->
+                            if (content != null) {
+                                UserDetailRoute(
+                                    userId = content,
+                                    modifier = Modifier.fillMaxSize(),
+                                )
+                            } else {
+                                NoSelectedUserScreen()
                             }
                         }
                     }

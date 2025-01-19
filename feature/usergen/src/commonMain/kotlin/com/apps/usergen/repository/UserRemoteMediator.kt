@@ -31,7 +31,6 @@ internal class UserRemoteMediator(
             }
 
             val userResponse = remoteSource.fetchUsers(
-                gender = userCollection.gender,
                 seed = userCollection.id,
                 page = currentPage,
                 countPerPage = state.config.pageSize,

@@ -6,18 +6,17 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import kotlinx.serialization.json.Json
 
 internal class NetworkUserRemoteSource(
     private val httpClient: HttpClient,
 ) : UserRemoteSource {
 
     override suspend fun fetchUsers(
-        gender: Gender?,
         seed: String,
         page: Int,
         countPerPage: Int,
     ): UserResponse = httpClient.get {
-        gender?.run { parameter("gender", gender) }
         parameter("page", page)
         parameter("results", countPerPage)
         parameter("seed", seed)
