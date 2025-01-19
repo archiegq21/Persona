@@ -10,6 +10,10 @@ val databaseModule = module {
         get<PersonaDatabase>().getUserCollectionDao()
     }
 
+    single {
+        get<PersonaDatabase>().getUserDao()
+    }
+
     databasePlatformModules()
 
 }

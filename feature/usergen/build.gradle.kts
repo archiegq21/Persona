@@ -39,6 +39,7 @@ kotlin {
             implementation(projects.core.database)
             implementation(projects.core.designsystem)
             implementation(projects.core.model)
+            implementation(projects.core.network)
             implementation(projects.library.paging)
 
             implementation(libs.navigation.compose)

@@ -20,4 +20,6 @@
     <string name="zero_count">Ops! Zero isn't a valid count</string>
 
     <string name="empty_user_collection">Looks like you don't have any users yet</string>
+
+    <string name="back">Back</string>
 </resources>

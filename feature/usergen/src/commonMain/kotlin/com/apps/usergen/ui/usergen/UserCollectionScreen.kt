@@ -169,12 +169,15 @@ private fun EmptyUserCollection(
         contentAlignment = BiasAlignment(0f, -0.5f),
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Image(
-                modifier = Modifier.widthIn(200.dp),
+                modifier = Modifier
+                    .widthIn(max = 320.dp),
                 imageVector = EmptyHero,
                 contentDescription = null,
             )

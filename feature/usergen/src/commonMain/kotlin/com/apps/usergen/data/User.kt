@@ -1,11 +1,13 @@
 package com.apps.usergen.data
 
+import com.apps.database.data.UserEntity
 import com.apps.model.Gender
 import com.apps.model.Nationality
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 
 data class User(
+    val userId: String,
     val gender: Gender,
     val name: Name,
     val location: Location,
@@ -100,3 +102,61 @@ data class User(
         val version: String
     )
 }
+
+fun UserEntity.toModel(): User = User(
+    userId = userId,
+    gender = gender,
+    name = User.Name(
+        title = name.title,
+        first = name.first,
+        last = name.last
+    ),
+    location = User.Location(
+        street = User.Street(
+            number = location.street.number,
+            name = location.street.name
+        ),
+        city = location.city,
+        state = location.state,
+        country = location.country,
+        postcode = location.postcode,
+        coordinates = User.Coordinates(
+            latitude = location.coordinates.latitude,
+            longitude = location.coordinates.longitude
+        ),
+        timezone = User.Timezone(
+            offset = location.timezone.offset,
+            description = location.timezone.description
+        ),
+    ),
+    email = email,
+    login = User.Login(
+        uuid = login.uuid,
+        username = login.username,
+        password = login.password,
+        salt = login.salt,
+        md5 = login.md5,
+        sha1 = login.sha1,
+        sha256 = login.sha256,
+    ),
+    dob = User.Dob(
+        date = dob.date,
+        age = dob.age
+    ),
+    registered = User.Registered(
+        date = registered.date,
+        age = registered.age
+    ),
+    phone = phone,
+    cell = cell,
+    id = User.Id(
+        name = id.name,
+        value = id.value
+    ),
+    picture = User.Picture(
+        large = picture.large,
+        medium = picture.medium,
+        thumbnail = picture.thumbnail
+    ),
+    nat = nat
+)

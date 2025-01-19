@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.Icons
@@ -23,7 +24,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.buildAnnotatedString
@@ -53,13 +56,16 @@ internal fun UserCard(
         ) {
             Box(
                 modifier = Modifier
+                    .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.primaryContainer)
-                    .size(100.dp),
+                    .size(80.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 SubcomposeAsyncImage(
+                    modifier = Modifier.matchParentSize(),
                     model = user.picture.medium,
                     contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     loading = {},
                     error = { PlaceholderImage(Modifier.matchParentSize()) }
                 )
@@ -78,16 +84,15 @@ internal fun UserCard(
                     text = buildAnnotatedString {
                         appendInlineContent(PlaceIconId, "Place Icon")
                         append(" ")
-                        append("${user.location.street}, ${user.location.city}, ${user.location.state} ${user.location.postcode}")
+                        append("${user.location.street.number} ${user.location.street.name}, ${user.location.city}, ${user.location.state} ${user.location.postcode}")
                     },
-                    color = Color.White,
                     inlineContent = mapOf(
                         Pair(
                             PlaceIconId,
                             InlineTextContent(
                                 Placeholder(
-                                    width = 24.sp,
-                                    height = 24.sp,
+                                    width = 16.sp,
+                                    height = 16.sp,
                                     placeholderVerticalAlign = PlaceholderVerticalAlign.Center
                                 )
                             ) {
@@ -99,7 +104,7 @@ internal fun UserCard(
                             }
                         )
                     ),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
         }
