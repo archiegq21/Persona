@@ -7,44 +7,66 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Female
-import androidx.compose.material.icons.rounded.Male
+import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material.icons.rounded.Tag
-import androidx.compose.material.icons.rounded.Transgender
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import org.jetbrains.compose.resources.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apps.usergen.Res
 import com.apps.usergen.data.Gender
-import com.apps.usergen.data.Nationality
-import com.apps.usergen.user_count
+import com.apps.usergen.generate
 import com.apps.usergen.request_form_title
+import com.apps.usergen.user_count
+import com.apps.usergen.zero_count
+import com.apps.usergen.invalid_count
+import com.apps.usergen.viewmodel.UserGenRequestViewModel
+import com.apps.usergen.viewmodel.UserGenUiState.ValidatedCount
+import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.viewmodel.koinViewModel
+
+data class GenUserParams(
+    val userCount: Int,
+    val gender: Gender?,
+)
 
 @Composable
 fun UserGenRequestRoute(
+    onClose: () -> Unit,
+    generateUsers: (GenUserParams) -> Unit,
+    viewModel: UserGenRequestViewModel = koinViewModel(),
     modifier: Modifier = Modifier
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     ElevatedCard(
         modifier = modifier,
     ) {
         UserGenListForm(
-            onGenerateUser = { },
+            onClose = onClose,
+            count = uiState.count,
+            onCountChanged = viewModel::setCount,
+            validatedCount = uiState.validatedCount,
+            onCountFocused = viewModel::onCountFocused,
+            gender = uiState.gender,
+            onGenderChanged = viewModel::setGender,
+            enabled = uiState.isFormValid,
+            generateUserParams = uiState.generateUserParams,
+            onGenerateUserClick = viewModel::onGenerateUser,
+            consumeGenerateUserParams = viewModel::consumeGenerateUserParams,
+            generateUsers = generateUsers,
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -52,12 +74,29 @@ fun UserGenRequestRoute(
 
 @Composable
 private fun UserGenListForm(
-    onGenerateUser: () -> Unit,
+    onClose: () -> Unit,
+    generateUsers: (GenUserParams) -> Unit,
+    count: String,
+    onCountChanged: (String) -> Unit,
+    validatedCount: ValidatedCount?,
+    onCountFocused: () -> Unit,
+    gender: Gender?,
+    onGenderChanged: (Gender?) -> Unit,
+    enabled: Boolean = true,
+    generateUserParams: GenUserParams?,
+    onGenerateUserClick: (
+        validatedCount: ValidatedCount?,
+        gender: Gender?,
+    ) -> Unit,
+    consumeGenerateUserParams: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var size by remember { mutableStateOf("") }
-    var selectedGender by remember { mutableStateOf<Gender?>(null) }
-    var selectedNationality by remember { mutableStateOf<Nationality?>(null) }
+    if (generateUserParams != null) {
+        LaunchedEffect(generateUserParams) {
+            generateUsers(generateUserParams)
+            consumeGenerateUserParams()
+        }
+    }
 
     Column(
         modifier = modifier
@@ -65,18 +104,29 @@ private fun UserGenListForm(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
-        Text(
-            modifier = Modifier.align(Alignment.Start),
-            text = stringResource(Res.string.request_form_title),
-            style = MaterialTheme.typography.headlineLarge,
-        )
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                modifier = Modifier.weight(1f),
+                text = stringResource(Res.string.request_form_title),
+                style = MaterialTheme.typography.headlineLarge,
+            )
+            IconButton(
+                onClick = onClose,
+                modifier = Modifier.align(Alignment.Top),
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Cancel,
+                    contentDescription = null,
+                )
+            }
+        }
         Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             TextField(
-                value = size,
-                onValueChange = { size = it },
+                value = count,
+                onValueChange = onCountChanged,
                 label = { Text(stringResource(Res.string.user_count)) },
                 prefix = {
                     Icon(
@@ -87,13 +137,36 @@ private fun UserGenListForm(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                 ),
-                modifier = Modifier.fillMaxWidth(),
+                isError = validatedCount != null && validatedCount.isError,
+                supportingText = {
+                    when (validatedCount) {
+                        ValidatedCount.Invalid -> Text(stringResource(Res.string.invalid_count))
+                        ValidatedCount.Zero -> Text(stringResource(Res.string.zero_count))
+                        is ValidatedCount.Valid, null -> {}
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+                    .onFocusChanged {
+                        if (it.isFocused) onCountFocused()
+                    },
             )
             GenderSelector(
                 modifier = Modifier.fillMaxWidth(),
-                selectedGender = selectedGender,
-                onGenderSelected = { selectedGender = it },
+                selectedGender = gender,
+                onGenderSelected = onGenderChanged,
             )
+        }
+        Button(
+            enabled = enabled,
+            onClick = {
+                onGenerateUserClick(
+                    validatedCount,
+                    gender,
+                )
+            },
+            modifier = Modifier.align(Alignment.End),
+        ) {
+            Text(stringResource(Res.string.generate))
         }
     }
 }

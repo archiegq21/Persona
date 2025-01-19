@@ -9,6 +9,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import androidx.navigation.compose.navigation
+import androidx.navigation.toRoute
+import com.apps.usergen.data.Gender
+import com.apps.usergen.ui.request.GenUserParams
 import com.apps.usergen.ui.request.UserGenRequestRoute
 import com.apps.usergen.ui.usergen.UserGenListRoute
 import kotlinx.serialization.Serializable
@@ -19,6 +23,20 @@ sealed interface UserGenNavDestination {
 
     @Serializable
     data object UserGenRequest : UserGenNavDestination
+
+    @Serializable
+    data class UsersList(
+        val userCount: Int,
+        val gender: Int?,
+    ) : UserGenNavDestination {
+
+        companion object {
+            operator fun invoke(params: GenUserParams) = UsersList(
+                userCount = params.userCount,
+                gender = params.gender?.ordinal,
+            )
+        }
+    }
 }
 
 fun NavGraphBuilder.userGenNavGraph(
@@ -39,7 +57,20 @@ fun NavGraphBuilder.userGenNavGraph(
     }
     dialog<UserGenNavDestination.UserGenRequest> {
         UserGenRequestRoute(
+            onClose = { navController.popBackStack() },
+            generateUsers = { params ->
+                navController.navigate(UserGenNavDestination.UsersList(params))
+            },
             modifier = Modifier.fillMaxWidth()
         )
+    }
+    composable<UserGenNavDestination.UsersList>(
+        popExitTransition = { fadeOut() },
+        popEnterTransition = { fadeIn() },
+        enterTransition = { fadeIn() },
+        exitTransition = { fadeOut() },
+    ) { backStackEntry ->
+        val params = backStackEntry.toRoute<UserGenNavDestination.UsersList>()
+
     }
 }
