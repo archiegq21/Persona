@@ -57,6 +57,9 @@ kotlin {
             implementation(compose.uiTest)
 
             implementation(libs.koin.test)
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.turbine)
 
             implementation(libs.androidx.paging.testing)
         }

@@ -7,8 +7,10 @@ agp = "8.8.0"
 # Kotlin
 kotlin = "2.1.0"
 serialization = "1.8.0"
-coroutines = "1.10.1"
 datetime = "0.6.1"
+# Coroutines
+coroutines = "1.10.1"
+turbine = "1.2.0"
 # Comose Multiplatform
 compose = "1.7.3"
 navigation = "2.8.0-alpha10"
@@ -49,7 +51,10 @@ crashkios = "0.8.6"
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
+# Coroutines
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 # Compose Multiplatform
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation" }
 window-size = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "window-size" }

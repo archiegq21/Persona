@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
-import com.apps.model.Gender
 import com.apps.usergen.data.UserCollection
 import com.apps.usergen.repository.UserCollectionRepository
 import com.apps.usergen.viewmodel.UserGenUiState.ValidatedCount
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -27,21 +25,28 @@ data class GenUserParams(
 
 data class UserGenUiState(
     val count: String = "",
-    val validatedCount: ValidatedCount? = null,
+    val validatedCount: ValidatedCount = ValidatedCount.Empty,
     val name: String = "",
     val generateUserParams: GenUserParams? = null,
 ) {
 
-    val isFormValid: Boolean
-        get() = validatedCount is ValidatedCount.Valid
+    val isValid: Boolean = validatedCount.isValid
 
     sealed interface ValidatedCount {
-        val isError: Boolean
-            get() = this !is Valid
+        val isValid: Boolean
+            get() = this is Valid
 
-        data class Valid(val count: Int) : ValidatedCount
-        data object Zero : ValidatedCount
-        data object Invalid : ValidatedCount
+        val isError: Boolean
+            get() = false
+
+        data object Zero : ValidatedCount {
+            override val isError: Boolean = true
+        }
+        data object Empty : ValidatedCount
+        data object Invalid : ValidatedCount {
+            override val isError: Boolean = true
+        }
+        data class Valid(val count: Int): ValidatedCount
     }
 
 }
@@ -53,16 +58,12 @@ class UserGenRequestViewModel(
 ) : ViewModel() {
 
     private val countState = savedStateHandle.getStateFlow(COUNT_KEY, "")
-    private val countFocused = MutableStateFlow(false)
-    private val countErrorState = combine(
-        countState.map { it.toIntOrNull() }.distinctUntilChanged(),
-        countFocused,
-    ) { count, focused ->
-        if (!focused && count != null) return@combine null
-        when (count) {
-            null -> ValidatedCount.Invalid
-            0 -> ValidatedCount.Zero
-            else -> ValidatedCount.Valid(count)
+    private val countValidationState = countState.map {
+        when {
+            it.isEmpty() -> ValidatedCount.Empty
+            it.toIntOrNull() == 0 -> ValidatedCount.Zero
+            it.toIntOrNull() == null -> ValidatedCount.Invalid
+            else -> ValidatedCount.Valid(it.toInt())
         }
     }
     private val nameState = savedStateHandle.getStateFlow(NAME_KEY, "")
@@ -71,7 +72,7 @@ class UserGenRequestViewModel(
 
     val uiState: StateFlow<UserGenUiState> = combine(
         countState,
-        countErrorState,
+        countValidationState,
         nameState,
         generateUserState,
     ) { count, countError, name, genUserParams ->
@@ -91,13 +92,9 @@ class UserGenRequestViewModel(
         savedStateHandle[NAME_KEY] = name
     }
 
-    fun onCountFocused() {
-        countFocused.update { true }
-    }
-
     @OptIn(ExperimentalUuidApi::class)
     fun onGenerateUser(
-        validatedCount: ValidatedCount?,
+        validatedCount: ValidatedCount,
         name: String,
     ) {
         viewModelScope.launch {
