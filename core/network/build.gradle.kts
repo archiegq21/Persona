@@ -40,13 +40,13 @@ kotlin {
 
             implementation(libs.kotlinx.coroutines.core)
             api(libs.ktor.client.core)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
+            api(libs.ktor.client.content.negotiation)
+            api(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
             implementation(libs.kotlinx.datetime)
         }
         commonTest.dependencies {
-            implementation(libs.ktor.mock)
+            api(libs.ktor.mock)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

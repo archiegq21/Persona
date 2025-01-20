@@ -39,8 +39,7 @@ internal class UserRemoteMediator(
                 it.toEntity(collectionId = userCollection.id)
             }
 
-            val isLimitReached =
-                if (currentPage * state.config.pageSize >= userCollection.count) true else false
+            val isLimitReached = currentPage * state.config.pageSize >= userCollection.count
 
             if (loadType == LoadType.REFRESH) {
                 userDao.deleteAllAndInsertAll(

@@ -10,12 +10,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class UserListViewModel(
-    private val collectionId: String,
-    private val repository: UserRepository,
+    collectionId: String,
+    repository: UserRepository,
 ) : ViewModel() {
 
     val pagedUsers: Flow<PagingData<User>> =
         repository.getPagedUsersForCollection(collectionId)
-            .map { it }.cachedIn(viewModelScope)
+            .cachedIn(viewModelScope)
 
 }

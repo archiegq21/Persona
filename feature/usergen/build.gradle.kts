@@ -35,6 +35,10 @@ kotlin {
     }
 
     sourceSets {
+        androidUnitTest.dependencies {
+            implementation(libs.robolectric)
+            implementation(libs.koin.test.junit4)
+        }
         commonMain.dependencies {
             implementation(projects.core.config)
             implementation(projects.core.database)
@@ -61,6 +65,7 @@ kotlin {
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)
             implementation(libs.turbine)
+            implementation(libs.ktor.mock)
 
             implementation(libs.androidx.paging.testing)
         }
