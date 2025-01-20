@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.serialization)
     alias(libs.plugins.cocoapods)
+    alias(libs.plugins.mokkery)
 }
 
 kotlin {

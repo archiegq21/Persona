@@ -1,10 +1,12 @@
 package com.apps.usergen.viewmodel
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import co.touchlab.kermit.Logger
 import com.apps.usergen.data.UserCollection
+import com.apps.usergen.repository.IdGenerator
 import com.apps.usergen.repository.UserCollectionRepository
 import com.apps.usergen.viewmodel.UserGenUiState.ValidatedCount
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,6 +55,7 @@ data class UserGenUiState(
 
 
 class UserGenRequestViewModel(
+    private val idGenerator: IdGenerator,
     private val savedStateHandle: SavedStateHandle,
     private val repository: UserCollectionRepository,
 ) : ViewModel() {
@@ -92,7 +95,6 @@ class UserGenRequestViewModel(
         savedStateHandle[NAME_KEY] = name
     }
 
-    @OptIn(ExperimentalUuidApi::class)
     fun onGenerateUser(
         validatedCount: ValidatedCount,
         name: String,
@@ -101,7 +103,7 @@ class UserGenRequestViewModel(
             try {
                 if (validatedCount !is ValidatedCount.Valid) return@launch
 
-                val id = Uuid.random().toHexString()
+                val id = idGenerator.generateId()
                 val userCollection = UserCollection(
                     id = id,
                     count = validatedCount.count,
@@ -127,7 +129,10 @@ class UserGenRequestViewModel(
     }
 
     companion object {
-        private const val COUNT_KEY = "Count"
-        private const val NAME_KEY = "Name"
+        @VisibleForTesting
+        const val COUNT_KEY = "Count"
+
+        @VisibleForTesting
+        const val NAME_KEY = "Name"
     }
 }

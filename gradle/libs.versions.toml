@@ -45,6 +45,8 @@ firebase-app-distribution = "5.1.0"
 # Kermit
 kermit = "2.0.5"
 crashkios = "0.8.6"
+# Mockkery
+mokkery = "2.6.0"
 
 [libraries]
 # Kotlin
@@ -124,3 +126,4 @@ serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref 
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
 firebase-app-distribution = { id = "com.google.firebase.appdistribution", version.ref = "firebase-app-distribution" }
+mokkery = { id = "dev.mokkery", version.ref = "mokkery" }
