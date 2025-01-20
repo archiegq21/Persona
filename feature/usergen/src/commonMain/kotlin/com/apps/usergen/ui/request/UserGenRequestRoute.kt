@@ -21,7 +21,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -55,13 +54,12 @@ fun UserGenRequestRoute(
             count = uiState.count,
             onCountChanged = viewModel::setCount,
             validatedCount = uiState.validatedCount,
-            onCountFocused = viewModel::onCountFocused,
-            enabled = uiState.isFormValid,
             generateUserParams = uiState.generateUserParams,
             name = uiState.name,
             onNameChanged = viewModel::setName,
             consumeGenerateUserParams = viewModel::consumeGenerateUserParams,
             generateUsers = generateUsers,
+            enabled = uiState.isValid,
             modifier = Modifier.fillMaxWidth(),
             onGenerateUserClick = viewModel::onGenerateUser,
         )
@@ -74,14 +72,13 @@ private fun UserGenListForm(
     generateUsers: (GenUserParams) -> Unit,
     count: String,
     onCountChanged: (String) -> Unit,
-    validatedCount: ValidatedCount?,
+    validatedCount: ValidatedCount,
     name: String,
     onNameChanged: (String) -> Unit,
-    onCountFocused: () -> Unit,
     enabled: Boolean = true,
     generateUserParams: GenUserParams?,
     onGenerateUserClick: (
-        validatedCount: ValidatedCount?,
+        count: ValidatedCount,
         name: String,
     ) -> Unit,
     consumeGenerateUserParams: () -> Unit,
@@ -139,27 +136,21 @@ private fun UserGenListForm(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                 ),
-                isError = validatedCount != null && validatedCount.isError,
+                isError = validatedCount.isError,
                 supportingText = {
                     when (validatedCount) {
                         ValidatedCount.Invalid -> Text(stringResource(Res.string.invalid_count))
                         ValidatedCount.Zero -> Text(stringResource(Res.string.zero_count))
-                        is ValidatedCount.Valid, null -> {}
+                        is ValidatedCount.Empty, is ValidatedCount.Valid -> {}
                     }
                 },
-                modifier = Modifier.fillMaxWidth()
-                    .onFocusChanged {
-                        if (it.isFocused) onCountFocused()
-                    },
+                modifier = Modifier.fillMaxWidth(),
             )
         }
         Button(
             enabled = enabled,
             onClick = {
-                onGenerateUserClick(
-                    validatedCount,
-                    name,
-                )
+                onGenerateUserClick(validatedCount, name,)
             },
             modifier = Modifier.align(Alignment.End),
         ) {

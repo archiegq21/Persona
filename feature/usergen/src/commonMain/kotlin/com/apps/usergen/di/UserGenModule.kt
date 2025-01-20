@@ -1,11 +1,13 @@
 package com.apps.usergen.di
 
+import com.apps.usergen.repository.IdGenerator
 import com.apps.usergen.repository.NetworkUserRemoteSource
 import com.apps.usergen.repository.RealUserCollectionRepository
 import com.apps.usergen.repository.RealUserRepository
 import com.apps.usergen.repository.UserCollectionRepository
 import com.apps.usergen.repository.UserRemoteSource
 import com.apps.usergen.repository.UserRepository
+import com.apps.usergen.repository.UuidIdGenerator
 import com.apps.usergen.viewmodel.UserCollectionViewModel
 import com.apps.usergen.viewmodel.UserDetailViewModel
 import com.apps.usergen.viewmodel.UserGenRequestViewModel
@@ -17,6 +19,7 @@ val userGenModule = module {
 
     viewModel {
         UserGenRequestViewModel(
+            idGenerator = get(),
             repository = get(),
             savedStateHandle = get(),
         )
@@ -59,5 +62,9 @@ val userGenModule = module {
         NetworkUserRemoteSource(
             httpClient = get(),
         )
+    }
+
+    single<IdGenerator> {
+        UuidIdGenerator
     }
 }
