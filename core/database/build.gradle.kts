@@ -40,9 +40,9 @@ kotlin {
                 implementation(projects.core.config)
                 implementation(projects.core.model)
 
-                implementation(libs.room.runtime)
-                implementation(libs.room.paging)
-                implementation(libs.sqlite.bundled)
+                api(libs.room.runtime)
+                api(libs.room.paging)
+                api(libs.sqlite.bundled)
 
                 implementation(libs.serialization)
                 implementation(libs.kotlinx.datetime)
