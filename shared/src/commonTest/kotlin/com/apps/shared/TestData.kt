@@ -1,8 +1,10 @@
 package com.apps.shared
 
-import androidx.compose.ui.autofill.AutofillType
 import com.apps.database.data.UserCollectionEntity
+import com.apps.model.Gender
+import com.apps.model.Nationality
 import com.apps.usergen.data.UserResponse
+import kotlinx.datetime.Instant
 
 val testCollection = UserCollectionEntity(
     id = "TestId",

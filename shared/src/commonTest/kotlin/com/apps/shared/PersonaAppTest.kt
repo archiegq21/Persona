@@ -1,6 +1,9 @@
 package com.apps.shared
 
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assertAll
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotDisplayed
@@ -240,6 +243,15 @@ class PersonaAppTest : KoinTest {
 
         onNodeWithText("Generate")
             .performClick()
+
+        waitForIdle()
+
+        onNodeWithText(testCollection.name)
+            .assertIsDisplayed()
+
+        onAllNodesWithText("Title First Last")
+            .onFirst()
+            .isDisplayed()
     }
 
 }
