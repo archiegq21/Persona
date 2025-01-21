@@ -49,6 +49,9 @@ crashkios = "0.8.6"
 mokkery = "2.6.0"
 # Robolectric
 robolectric = "4.14.2"
+# Testing
+test-orchestrator = "1.5.1"
+test-runner = "1.6.2"
 
 [libraries]
 # Kotlin
@@ -115,6 +118,9 @@ kermit-crashylytics = { module = "co.touchlab:kermit-crashlytics", version.ref =
 crashkios = { module = "co.touchlab.crashkios:crashlytics", version.ref = "crashkios" }
 # Robolectric
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+# Testing
+test-orchestrator = { module = "androidx.test:orchestrator", version.ref = "test-orchestrator" }
+test-runner = { module = "androidx.test:runner", version.ref = "test-runner" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

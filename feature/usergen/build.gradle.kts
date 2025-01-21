@@ -104,6 +104,11 @@ dependencies {
     debugImplementation(libs.compose.ui.tooling)
     androidTestImplementation(libs.android.compose.ui.junit)
     debugImplementation(libs.android.compose.ui.test)
+
+    testImplementation(libs.android.compose.ui.junit)
+    testImplementation(libs.test.runner)
+    debugImplementation(libs.android.compose.ui.test)
+    androidTestUtil(libs.test.orchestrator)
 }
 
 compose.resources {
