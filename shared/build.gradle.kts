@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.cocoapods)
+    alias(libs.plugins.mokkery)
 }
 
 kotlin {
@@ -38,6 +39,10 @@ kotlin {
     }
     
     sourceSets {
+        androidUnitTest.dependencies {
+            implementation(libs.robolectric)
+            implementation(libs.koin.test.junit4)
+        }
         commonMain.dependencies {
             implementation(projects.core.config)
             implementation(projects.core.database)
@@ -60,6 +65,17 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+
+            @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+            implementation(compose.uiTest)
+
+            implementation(libs.koin.test)
+            implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.turbine)
+            implementation(libs.ktor.mock)
+
+            implementation(libs.androidx.paging.testing)
         }
     }
 }
@@ -93,6 +109,11 @@ dependencies {
 
     androidTestImplementation(libs.android.compose.ui.junit)
     debugImplementation(libs.android.compose.ui.test)
+
+    testImplementation(libs.android.compose.ui.junit)
+    testImplementation(libs.test.runner)
+    debugImplementation(libs.android.compose.ui.test)
+    androidTestUtil(libs.test.orchestrator)
 }
 
 compose.resources {
