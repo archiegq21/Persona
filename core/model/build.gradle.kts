@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.cocoapods)
     alias(libs.plugins.serialization)
 }
 
@@ -14,21 +13,6 @@ kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
-    }
-
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
-
-    cocoapods {
-        version = "1.0"
-        summary = "Model"
-        homepage = "Model"
-        framework {
-            baseName = "model"
-            isStatic = true
-        }
-        podfile = project.file("../../iosApp/Podfile")
     }
 
     sourceSets {

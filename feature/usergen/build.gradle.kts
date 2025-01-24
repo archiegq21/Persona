@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.serialization)
-    alias(libs.plugins.cocoapods)
     alias(libs.plugins.mokkery)
 }
 
@@ -17,21 +16,6 @@ kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
-    }
-
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
-
-    cocoapods {
-        version = "1.0"
-        summary = "User Generator"
-        homepage = "User Generator"
-        framework {
-            baseName = "usergen"
-            isStatic = true
-        }
-        podfile = project.file("../../iosApp/Podfile")
     }
 
     sourceSets {

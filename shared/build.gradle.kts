@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.cocoapods)
     alias(libs.plugins.mokkery)
 }
 
@@ -16,26 +15,6 @@ kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
-    }
-
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
-
-    cocoapods {
-        summary = "Shared Module"
-        homepage = "Dwell Students Homepage"
-        version = "1.0"
-        ios.deploymentTarget = libs.versions.ios.target.get()
-        podfile = project.file("../iosApp/Podfile")
-        framework {
-            baseName = "shared"
-            isStatic = true
-        }
-
-        pod("FirebaseCrashlytics") {
-            extraOpts += listOf("-compiler-option", "-fmodules")
-        }
     }
     
     sourceSets {

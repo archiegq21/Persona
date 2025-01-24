@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.cocoapods)
 }
 
 kotlin {
@@ -13,21 +12,6 @@ kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
-    }
-
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
-
-    cocoapods {
-        version = "1.0"
-        summary = "Network"
-        homepage = "Network"
-        framework {
-            baseName = "network"
-            isStatic = true
-        }
-        podfile = project.file("../../iosApp/Podfile")
     }
 
     sourceSets {
@@ -47,9 +31,6 @@ kotlin {
         }
         commonTest.dependencies {
             api(libs.ktor.mock)
-        }
-        iosMain.dependencies {
-            implementation(libs.ktor.client.darwin)
         }
     }
 }

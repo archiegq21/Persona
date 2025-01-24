@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.cocoapods)
 }
 
 kotlin {
@@ -16,21 +15,6 @@ kotlin {
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
-    }
-
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
-
-    cocoapods {
-        version = "1.0"
-        summary = "Design System"
-        homepage = "Design System"
-        framework {
-            baseName = "designsystem"
-            isStatic = true
-        }
-        podfile = project.file("../../iosApp/Podfile")
     }
 
     sourceSets {
@@ -63,9 +47,6 @@ kotlin {
             api(libs.kotlin.test)
             @OptIn(ExperimentalComposeLibrary::class)
             api(compose.uiTest)
-        }
-        iosMain.dependencies {
-            implementation(libs.ktor.client.darwin)
         }
     }
 }

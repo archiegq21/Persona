@@ -48,7 +48,7 @@ crashkios = "0.8.6"
 # Mockkery
 mokkery = "2.6.0"
 # Robolectric
-robolectric = "4.14.2"
+robolectric = "4.14.1"
 # Testing
 test-orchestrator = "1.5.1"
 test-runner = "1.6.2"
